@@ -130,7 +130,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
   const update = (f: string, v: string | boolean) => setFormData(p => ({ ...p, [f]: v }));
   const fmtPhone = (v: string) => { const n = v.replace(/\D/g, ''); if (n.length <= 3) return n; if (n.length <= 6) return `(${n.slice(0, 3)}) ${n.slice(3)}`; return `(${n.slice(0, 3)}) ${n.slice(3, 6)}-${n.slice(6, 10)}`; };
   const fmtSSN = (v: string) => { const n = v.replace(/\D/g, ''); if (n.length <= 3) return n; if (n.length <= 5) return `${n.slice(0, 3)}-${n.slice(3)}`; return `${n.slice(0, 3)}-${n.slice(3, 5)}-${n.slice(5, 9)}`; };
-  const Input = ({ n, p, t = 'text', val, onCh }: any) => (
+  const Input = ({ n, p, t = 'text', val, onCh }: { n: string; p?: string; t?: string; val: string; onCh: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
     <div className="mb-4">
       <label className="block text-sm font-semibold text-gray-700 mb-1">{n}</label>
       <input type={t} value={val} onChange={onCh} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder={p} />
@@ -142,7 +142,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
       <select value={val} onChange={onCh} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white text-sm">{opts}</select>
     </div>
   );
-  const Btn = ({ onClick, children, primary = false }: any) => (
+  const Btn = ({ onClick, children, primary = false }: { onClick: () => void; children: React.ReactNode; primary?: boolean }) => (
     <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-colors text-sm ${primary ? 'bg-primary-500 hover:bg-primary-600 text-white' : 'text-gray-600 hover:text-gray-900'}`}>{children}</button>
   );
 
