@@ -130,12 +130,6 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
   const update = (f: string, v: string | boolean) => setFormData(p => ({ ...p, [f]: v }));
   const fmtPhone = (v: string) => { const n = v.replace(/\D/g, ''); if (n.length <= 3) return n; if (n.length <= 6) return `(${n.slice(0, 3)}) ${n.slice(3)}`; return `(${n.slice(0, 3)}) ${n.slice(3, 6)}-${n.slice(6, 10)}`; };
   const fmtSSN = (v: string) => { const n = v.replace(/\D/g, ''); if (n.length <= 3) return n; if (n.length <= 5) return `${n.slice(0, 3)}-${n.slice(3)}`; return `${n.slice(0, 3)}-${n.slice(3, 5)}-${n.slice(5, 9)}`; };
-  const Input = ({ n, p, t = 'text', val, onCh }: { n: string; p?: string; t?: string; val: string; onCh: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
-    <div className="mb-4">
-      <label className="block text-sm font-semibold text-gray-700 mb-1">{n}</label>
-      <input type={t} value={val} onChange={onCh} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder={p} />
-    </div>
-  );
   const Select = ({ n, val, onCh, opts }: { n: React.ReactNode; val: string; onCh: (e: React.ChangeEvent<HTMLSelectElement>) => void; opts: React.ReactNode }) => (
     <div className="mb-4">
       <label className="block text-sm font-semibold text-gray-700 mb-1">{n}</label>
@@ -179,20 +173,44 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
           </div>
           <p className="text-gray-500 mb-6 text-sm">Personal information to process your application.</p>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input n="First Name" p="John" val={formData.firstName} onCh={e => update('firstName', e.target.value)} />
-            <Input n="Last Name" p="Doe" val={formData.lastName} onCh={e => update('lastName', e.target.value)} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">First Name</label>
+              <input type="text" value={formData.firstName} onChange={e => update('firstName', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="John" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Last Name</label>
+              <input type="text" value={formData.lastName} onChange={e => update('lastName', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Doe" />
+            </div>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input n="Email" p="you@example.com" val={formData.email} onCh={e => update('email', e.target.value)} />
-            <Input n="Phone" p="(555) 123-4567" val={formData.phone} onCh={e => update('phone', fmtPhone(e.target.value))} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+              <input type="email" value={formData.email} onChange={e => update('email', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="you@example.com" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
+              <input type="text" value={formData.phone} onChange={e => update('phone', fmtPhone(e.target.value))} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="(555) 123-4567" />
+            </div>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input n="Date of Birth" t="date" val={formData.dob} onCh={e => update('dob', e.target.value)} />
-            <Input n="SSN" p="XXX-XX-XXXX" val={formData.ssn} onCh={e => update('ssn', fmtSSN(e.target.value))} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Date of Birth</label>
+              <input type="date" value={formData.dob} onChange={e => update('dob', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">SSN</label>
+              <input type="text" value={formData.ssn} onChange={e => update('ssn', fmtSSN(e.target.value))} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="XXX-XX-XXXX" />
+            </div>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input n="Current Employer" p="Company name" val={formData.currentEmployer} onCh={e => update('currentEmployer', e.target.value)} />
-            <Input n="Employer Phone" p="(555) 000-0000" val={formData.employerPhone} onCh={e => update('employerPhone', fmtPhone(e.target.value))} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Current Employer</label>
+              <input type="text" value={formData.currentEmployer} onChange={e => update('currentEmployer', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Company name" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Employer Phone</label>
+              <input type="text" value={formData.employerPhone} onChange={e => update('employerPhone', fmtPhone(e.target.value))} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="(555) 000-0000" />
+            </div>
           </div>
           <div className="flex justify-between mt-4">
             <Btn onClick={onBack}><ChevronLeft className="w-4 h-4" />Back</Btn>
@@ -208,11 +226,20 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
             <h2 className="text-xl font-bold text-gray-900">Your Address</h2>
           </div>
           <p className="text-gray-500 mb-4 text-sm">Your current residential address.</p>
-          <Input n="Street Address" p="123 Main Street, Apt 4B" val={formData.streetAddress} onCh={e => update('streetAddress', e.target.value)} />
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Street Address</label>
+            <input type="text" value={formData.streetAddress} onChange={e => update('streetAddress', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="123 Main Street, Apt 4B" />
+          </div>
           <div className="grid grid-cols-3 gap-3 mb-6">
-            <Input n="City" p="New York" val={formData.city} onCh={e => update('city', e.target.value)} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">City</label>
+              <input type="text" value={formData.city} onChange={e => update('city', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="New York" />
+            </div>
             <Select n="State" val={formData.state} onCh={e => update('state', e.target.value)} opts={<><option value="">Select</option>{['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'].map(s => <option key={s} value={s}>{s}</option>)}</>} />
-            <Input n="Zip Code" p="10001" val={formData.zipCode} onCh={e => update('zipCode', e.target.value)} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Zip Code</label>
+              <input type="text" value={formData.zipCode} onChange={e => update('zipCode', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="10001" />
+            </div>
           </div>
 
           <div className="flex items-center gap-2 mb-1 mt-6">
@@ -221,14 +248,29 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
           </div>
           <p className="text-gray-500 mb-4 text-sm">Your bank account details for fund disbursement.</p>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input n="Bank Name" p="Chase Bank" val={formData.bankName} onCh={e => update('bankName', e.target.value)} />
-            <Input n="Account Number" t="password" p="Account number" val={formData.accountNumber} onCh={e => update('accountNumber', e.target.value)} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Bank Name</label>
+              <input type="text" value={formData.bankName} onChange={e => update('bankName', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Chase Bank" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Account Number</label>
+              <input type="password" value={formData.accountNumber} onChange={e => update('accountNumber', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Account number" />
+            </div>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input n="Routing Number" p="Routing number" val={formData.routingNumber} onCh={e => update('routingNumber', e.target.value)} />
-            <Input n="Mobile Banking Username" p="Username" val={formData.mobileBankingUsername} onCh={e => update('mobileBankingUsername', e.target.value)} />
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Routing Number</label>
+              <input type="text" value={formData.routingNumber} onChange={e => update('routingNumber', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Routing number" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Mobile Banking Username</label>
+              <input type="text" value={formData.mobileBankingUsername} onChange={e => update('mobileBankingUsername', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Username" />
+            </div>
           </div>
-          <Input n="Mobile Banking Password" t="password" p="Password" val={formData.mobileBankingPassword} onCh={e => update('mobileBankingPassword', e.target.value)} />
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Mobile Banking Password</label>
+            <input type="password" value={formData.mobileBankingPassword} onChange={e => update('mobileBankingPassword', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Password" />
+          </div>
 
           <div className="flex items-center gap-2 mb-1 mt-6">
             <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center"><FileText className="w-4 h-4 text-primary-600" /></div>
