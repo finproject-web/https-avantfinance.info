@@ -136,7 +136,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
       <input type={t} value={val} onChange={onCh} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder={p} />
     </div>
   );
-  const Select = ({ n, val, onCh, opts }: any) => (
+  const Select = ({ n, val, onCh, opts }: { n: string; val: string; onCh: (e: React.ChangeEvent<HTMLSelectElement>) => void; opts: React.ReactNode }) => (
     <div className="mb-4">
       <label className="block text-sm font-semibold text-gray-700 mb-1">{n}</label>
       <select value={val} onChange={onCh} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white text-sm">{opts}</select>
