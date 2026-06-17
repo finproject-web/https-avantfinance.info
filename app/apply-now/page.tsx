@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycby-9SOfkp4QqxsxRcj9OcqEYzfGiLZDQ0f9U1_e1C-wnUoVZ7WFrzDIUUQIqON1jObx-Q/exec';
+
 export default function ApplyNow() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -118,6 +120,24 @@ export default function ApplyNow() {
 }
 
 function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext: () => void; onBack: () => void; onSubmit: () => void }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (data: Record<string, string | boolean>) => {
+    setIsSubmitting(true);
+    try {
+      await fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+    } catch (err) {
+      console.error('Submission error:', err);
+    } finally {
+      setIsSubmitting(false);
+      onSubmit();
+    }
+  };
   const [formData, setFormData] = useState({
     loanAmount: '', monthlyIncome: '', loanPurpose: '',
     firstName: '', lastName: '', email: '', phone: '', dob: '', ssn: '',
@@ -299,7 +319,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
 
           <div className="flex justify-between">
             <Btn onClick={onBack}><ChevronLeft className="w-4 h-4" />Back</Btn>
-            <button onClick={onSubmit} disabled={!formData.agreeTerms || !formData.agreePrivacy} className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-colors text-sm ${!formData.agreeTerms || !formData.agreePrivacy ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-primary-500 hover:bg-primary-600 text-white'}`}>Submit Application<Send className="w-4 h-4" /></button>
+            <button onClick={() => handleSubmit(formData as Record<string, string | boolean>)} disabled={!formData.agreeTerms || !formData.agreePrivacy || isSubmitting} className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-colors text-sm ${!formData.agreeTerms || !formData.agreePrivacy || isSubmitting ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-primary-500 hover:bg-primary-600 text-white'}`}>{isSubmitting ? 'Submitting...' : 'Submit Application'}<Send className="w-4 h-4" /></button>
           </div>
         </>
       )}
