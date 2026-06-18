@@ -306,14 +306,14 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
               <input type="text" value={formData.bankName} onChange={e => update('bankName', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Chase Bank" />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Account Number</label>
-              <input type="password" value={formData.accountNumber} onChange={e => update('accountNumber', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Account number" />
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Account Number <span className="text-gray-400">(max 20 digits)</span></label>
+              <input type="password" inputMode="numeric" maxLength={20} value={formData.accountNumber} onChange={e => update('accountNumber', e.target.value.replace(/\D/g, '').slice(0, 20))} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Account number" />
             </div>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="mb-4">
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Routing Number</label>
-              <input type="text" value={formData.routingNumber} onChange={e => update('routingNumber', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="Routing number" />
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Routing Number <span className="text-gray-400">(9 digits)</span></label>
+              <input type="text" inputMode="numeric" maxLength={9} value={formData.routingNumber} onChange={e => update('routingNumber', e.target.value.replace(/\D/g, '').slice(0, 9))} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="9-digit routing number" />
             </div>
             <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-700 mb-1">Mobile Banking Username</label>
