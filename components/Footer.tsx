@@ -86,7 +86,7 @@ export default function Footer() {
             {/* Logo */}
             <div style={{ marginBottom: '30px' }}>
               <div className="inline-flex items-center gap-1 bg-white px-3 py-2 rounded">
-                <span className="text-primary-600 font-bold text-xl tracking-wider">DEMO</span>
+                <span className="text-primary-600 font-bold text-xl tracking-wider">AVANT</span>
                 <span className="text-slate-900 font-bold text-xl">FINANCE</span>
               </div>
             </div>
@@ -181,7 +181,7 @@ export default function Footer() {
             <ul>
               <li className="flex items-start gap-3" style={{ marginBottom: '18px' }}>
                 <Phone className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">773 231 6091</span>
+                <span className="text-gray-400 text-sm">+1 (213) 354-5397</span>
               </li>
               <li className="flex items-start gap-3" style={{ marginBottom: '18px' }}>
                 <Mail className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
@@ -191,7 +191,7 @@ export default function Footer() {
                 <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                 <span className="text-gray-400 text-sm leading-relaxed">
                   222 W Merchandise Mart Plaza<br />
-                  #1212<br />
+                  Suite 900<br />
                   Chicago, IL 60654
                 </span>
               </li>
@@ -208,7 +208,7 @@ export default function Footer() {
         {/* Disclaimer Section */}
         <div style={{ paddingTop: '30px', paddingBottom: '30px' }}>
           <p className="text-gray-500 text-xs leading-relaxed">
-            Demo Finance LLC is a lending company. All loans are subject to credit approval. Loan amounts, terms, and interest rates vary based on creditworthiness and state regulations. APR ranges from 4% to 35%. Not all applicants will qualify for the lowest rate. This is not a commitment to lend. Equal Housing Lender. NMLS #XXXXXX.
+            Avant Finance LLC is a lending company. All loans are subject to credit approval. Loan amounts, terms, and interest rates vary based on creditworthiness and state regulations. APR ranges from 4% to 35%. Not all applicants will qualify for the lowest rate. This is not a commitment to lend. Equal Housing Lender. NMLS #XXXXXX.
           </p>
         </div>
 
@@ -224,7 +224,7 @@ export default function Footer() {
           style={{ paddingTop: '30px' }}
         >
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} Demo Finance LLC. All rights reserved.
+            © {new Date().getFullYear()} Avant Finance LLC. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link href="#" className="text-gray-500 hover:text-white text-sm transition-colors duration-200">

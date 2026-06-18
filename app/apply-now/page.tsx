@@ -359,7 +359,7 @@ function Sidebar() {
       <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl p-8 text-white text-center">
         <h4 className="font-bold text-lg mb-3">Need Help?</h4>
         <p className="text-base text-white/80 mb-4">Call us directly</p>
-        <a href="tel:+17732316091" className="text-2xl font-extrabold text-white hover:text-white/90 transition-colors">773 231 6091</a>
+        <a href="tel:+12133545397" className="text-2xl font-extrabold text-white hover:text-white/90 transition-colors">+1 (213) 354-5397</a>
       </div>
     </div>
   );

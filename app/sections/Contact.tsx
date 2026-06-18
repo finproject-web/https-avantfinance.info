@@ -9,7 +9,7 @@ const contactCards = [
   {
     icon: Phone,
     title: 'Call Us',
-    primary: '773 231 6091',
+    primary: '+1 (213) 354-5397',
     secondary: 'Mon-Fri 8AM-7PM CT',
   },
   {
@@ -21,7 +21,7 @@ const contactCards = [
   {
     icon: MapPin,
     title: 'Visit Us',
-    primary: '222 W Merchandise Mart Plaza #1212',
+    primary: '222 W Merchandise Mart Plaza, Suite 900',
     secondary: 'Chicago, IL 60654',
   },
 ];
