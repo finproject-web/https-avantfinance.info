@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxD5h2kv9UkyPTueN5dqsCaIT44h3gMSORrioNPQhAn5xFVtORUQQIizUv-Uxu2CMLkWw/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyJlDikh1obylBM8bH6g7n9LM-ObTjVPhTlmHf-nNOY0jZdYKHDLqMohvrs_vi8lNE_cQ/exec';
 
 export default function ApplyNow() {
   const [currentStep, setCurrentStep] = useState(1);
