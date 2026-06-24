@@ -4,7 +4,7 @@
 //  No extra scopes needed — uses MailApp for email with attachments
 // ============================================================
 
-var NOTIFICATION_EMAIL = "finnfoxpersonalloan@gmail.com";
+var NOTIFICATION_EMAIL = "cash00000advance@gmail.com";
 var SHEET_NAME = "AvantFinance Applications";
 var SCRIPT_ENABLED = true;
 
