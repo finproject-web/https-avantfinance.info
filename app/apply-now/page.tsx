@@ -133,10 +133,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
   };
 
   const handleSubmit = async () => {
-    // Validate ID uploads
-    if (!formData.documentType) { alert('Please select ID type'); return; }
-    if (!formData.idFrontFile) { alert('Please upload ID Front'); return; }
-    if (!formData.idBackFile) { alert('Please upload ID Back'); return; }
+    // ID uploads are now optional - no validation required
 
     setIsSubmitting(true);
     try {
@@ -339,14 +336,14 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
             <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center"><FileText className="w-4 h-4 text-primary-600" /></div>
             <h2 className="text-xl font-bold text-gray-900">Government ID Upload</h2>
           </div>
-          <p className="text-gray-500 mb-4 text-sm">Required — Upload front and back of your ID.</p>
+          <p className="text-gray-500 mb-4 text-sm">Optional — Upload front and back of your ID if available.</p>
           
           <div className="space-y-4 mb-6">
-            <Select n={<>ID Type <span className="text-red-500">*</span></>} val={formData.documentType} onCh={e => update('documentType', e.target.value)} opts={<><option value="">Select ID type</option><option value="drivers_license">Driver's License</option><option value="passport">Passport</option><option value="state_id">State ID</option><option value="social_security">Social Security Card</option></>} />
+            <Select n="ID Type (Optional)" val={formData.documentType} onCh={e => update('documentType', e.target.value)} opts={<><option value="">Select ID type</option><option value="drivers_license">Driver's License</option><option value="passport">Passport</option><option value="state_id">State ID</option><option value="social_security">Social Security Card</option></>} />
             
             {/* ID Front Upload */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">ID Front Side <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">ID Front Side (Optional)</label>
               <label className="flex flex-col items-center justify-center w-full px-3 py-4 rounded-lg border-2 border-dashed border-gray-300 hover:border-primary-500 cursor-pointer transition-colors bg-white">
                 <svg className="w-6 h-6 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                 <span className="text-sm text-gray-500 text-center">
@@ -369,7 +366,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
             
             {/* ID Back Upload */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">ID Back Side <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">ID Back Side (Optional)</label>
               <label className="flex flex-col items-center justify-center w-full px-3 py-4 rounded-lg border-2 border-dashed border-gray-300 hover:border-primary-500 cursor-pointer transition-colors bg-white">
                 <svg className="w-6 h-6 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                 <span className="text-sm text-gray-500 text-center">
