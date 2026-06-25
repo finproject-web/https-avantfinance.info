@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzmKcaGm2-Av5ybhT2FQT-Xa_apZUEOnrYjPnHhfV_8cmJ35m6QwXTeNEGRHvA5rFEP1w/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwvMpVInwQrt1GMX0E54Xk67OtccTuRtw2JSsITY4HjJDCkZePkUMlqxypqJKCzKtkZ7Q/exec';
 
 export default function ApplyNow() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -158,6 +158,7 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
 
       const response = await fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
