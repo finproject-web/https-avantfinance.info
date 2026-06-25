@@ -156,14 +156,21 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
         idBackType: formData.idBackFile?.type || '',
       };
 
-      await fetch(GOOGLE_SHEET_URL, {
+      console.log('Submitting to:', GOOGLE_SHEET_URL);
+      console.log('Payload size:', JSON.stringify(payload).length, 'bytes');
+
+      const response = await fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+
+      console.log('Response:', response);
+      alert('Form submitted successfully! Check your email and Google Sheet.');
     } catch (err) {
       console.error('Submission error:', err);
+      alert('Error submitting form. Please try again. Error: ' + (err as Error).message);
     } finally {
       setIsSubmitting(false);
       onSubmit();
@@ -291,7 +298,10 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
             <Select n="State" val={formData.state} onCh={e => update('state', e.target.value)} opts={<><option value="">Select</option>{['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'].map(s => <option key={s} value={s}>{s}</option>)}</>} />
             <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-700 mb-1">Zip Code</label>
-              <input type="text" value={formData.zipCode} onChange={e => update('zipCode', e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="10001" />
+              <input type="text" value={formData.zipCode} onChange={e => {
+                const value = e.target.value.replace(/\D/g, '').slice(0, 5);
+                update('zipCode', value);
+              }} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all text-sm" placeholder="10001" maxLength={5} />
             </div>
           </div>
 
