@@ -158,7 +158,6 @@ function FormContent({ step, onNext, onBack, onSubmit }: { step: number; onNext:
 
       const response = await fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
